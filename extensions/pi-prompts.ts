@@ -2,6 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { join, dirname } from "path";
 import { homedir } from "os";
+import { fileURLToPath } from "url";
 
 interface State {
   enabled: boolean;
@@ -18,7 +19,9 @@ const DEFAULT_STATE: State = {
   },
 };
 
-const PACKAGE_ROOT = dirname(dirname(import.meta.path));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const PACKAGE_ROOT = dirname(__dirname);
 const FRAGMENTS_DIR = join(PACKAGE_ROOT, "fragments");
 const STATE_DIR = join(homedir(), ".local", "share", "pi-prompts");
 const STATE_PATH = join(STATE_DIR, "state.json");
