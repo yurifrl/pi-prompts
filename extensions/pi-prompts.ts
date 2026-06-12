@@ -23,7 +23,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const PACKAGE_ROOT = dirname(__dirname);
 const FRAGMENTS_DIR = join(PACKAGE_ROOT, "fragments");
-const STATE_DIR = join(homedir(), ".local", "share", "pi-prompts");
+const STATE_DIR = join(homedir(), ".pi", "agent", "extensions", "pi-prompts");
 const STATE_PATH = join(STATE_DIR, "state.json");
 
 function loadState(): State {
