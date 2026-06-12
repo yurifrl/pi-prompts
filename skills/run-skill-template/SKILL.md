@@ -1,6 +1,6 @@
 ---
 name: run-skill-template
-description: Example: Node 20 via nvm, Python 3.12 via uv, etc.
+description: "Example: Node 20 via nvm, Python 3.12 via uv, etc."
 upstream_path: system-prompts/skill-run-skill-template.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
 ---
