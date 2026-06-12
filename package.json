@@ -1,0 +1,15 @@
+{
+  "name": "pi-prompts",
+  "version": "0.1.0",
+  "description": "Claude Code system prompts adapted for pi - skills, agents, and grouped prompt fragments",
+  "keywords": ["pi-package"],
+  "license": "MIT",
+  "pi": {
+    "extensions": ["extensions"],
+    "skills": ["skills"],
+    "prompts": ["prompts"]
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
