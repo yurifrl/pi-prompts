@@ -1,21 +1,10 @@
 ---
 name: verify-skill
-description: <!--
+description: "Verify code changes by running the app and observing behavior"
 upstream_path: system-prompts/skill-verify-skill.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
 ---
 
-<!--
-name: 'Skill: Verify skill'
-description: Skill for opinionated verification workflow for validating code changes.
-ccVersion: 2.1.166
--->
----
-name: verify
-description: Verify that a code change actually does what it's supposed to by running the app and observing behavior. Use when asked to verify a PR, confirm a fix works, test a change manually, check that a feature works, or validate local changes before pushing.
----
-
-**Verification is runtime observation.** You build the app, run it,
 drive it to where the changed code executes, and capture what you
 see. That capture is your evidence. Nothing else is.
 

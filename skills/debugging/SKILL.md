@@ -1,21 +1,10 @@
 ---
 name: debugging
-description: Debug Skill
+description: "Debug issues in Claude Code sessions - systematic debugging instructions"
 upstream_path: system-prompts/skill-debugging.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
 ---
 
-<!--
-name: 'Skill: Debugging'
-description: Instructions for debugging an issue that the user is encountering in the Claude Code session
-ccVersion: 2.1.122
-variables:
-  - DEBUG_LOGGING_WAS_ALREADY_ACTIVE
-  - DEBUG_LOG_PATH
-  - DEBUG_LOG_SUMMARY
-  - ISSUE_DESCRIPTION
-  - DAEMON_DEBUG_CONTEXT
-  - GET_SETTINGS_FILE_PATH_FN
   - LOG_LINE_COUNT
   - CLAUDE_CODE_GUIDE_SUBAGENT_NAME
 -->

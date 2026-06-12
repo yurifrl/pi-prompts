@@ -1,21 +1,10 @@
 ---
 name: run-skill-generator
-description: <!--
+description: "Author or improve project-specific run skills for build, launch, and troubleshooting"
 upstream_path: system-prompts/skill-run-skill-generator.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
 ---
 
-<!--
-name: 'Skill: Run skill generator'
-description: Skill for authoring or improving a project-specific run skill that documents verified build, launch, runtime driving, and troubleshooting steps
-ccVersion: 2.1.145
--->
----
-name: run-skill-generator
-description: Author or improve the run-<unit> skill — a per-project skill that tells agents how to build, launch, and drive this project's app. Use when the user asks to set up the project, get it running, write run instructions, or verify build/run steps work from a clean environment.
----
-
-Your job is to produce a **skill** at `<unit>/.claude/skills/run-<unit-name>/`
 that lets a future agent build, launch, and **drive** this project from
 a clean machine.
 

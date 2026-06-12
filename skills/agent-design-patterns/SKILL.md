@@ -1,19 +1,8 @@
 ---
 name: agent-design-patterns
-description: Agent Design Patterns
+description: "Reference guide for building agents with Claude API - tool design, context management, caching"
 upstream_path: system-prompts/skill-agent-design-patterns.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
----
-
-<!--
-name: 'Skill: Agent Design Patterns'
-description: Reference guide covering decision heuristics for building agents on the Claude API, including tool surface design, context management, caching strategies, and composing tool calls
-ccVersion: 2.1.154
--->
-# Agent Design Patterns
-
-This file covers decision heuristics for building agents on the Claude API: which primitives to reach for, how to design your tool surface, and how to manage context and cost over long runs. For per-tool mechanics and code examples, see `tool-use-concepts.md` and the language-specific folders.
-
 ---
 
 ## Model Parameters

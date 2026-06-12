@@ -1,20 +1,9 @@
 ---
 name: create-verifier-skills
-description: <Verifier Title>
+description: "Create verifier skills for the Verify agent to automatically verify code changes"
 upstream_path: system-prompts/skill-create-verifier-skills.md
 upstream_commit: 65618780f67af6ea3930a60caac8078fc382b45e
 ---
-
-<!--
-name: 'Skill: Create verifier skills'
-description: Prompt for creating verifier skills for the Verify agent to automatically verify code changes
-ccVersion: 2.1.142
-variables:
-  - ENABLE_TASKS_FEATURE
-  - TASKCREATE_TOOL_NAME
-  - TODOWRITE_TOOL_NAME
--->
-Use the ${ENABLE_TASKS_FEATURE()?TASKCREATE_TOOL_NAME:TODOWRITE_TOOL_NAME} tool to track your progress through this multi-step task.
 
 ## Goal
 
