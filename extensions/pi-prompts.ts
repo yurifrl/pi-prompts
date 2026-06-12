@@ -1,6 +1,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { join, dirname } from "path";
+import { homedir } from "os";
 
 interface State {
   enabled: boolean;
@@ -19,29 +20,15 @@ const DEFAULT_STATE: State = {
 
 const PACKAGE_ROOT = dirname(dirname(import.meta.path));
 const FRAGMENTS_DIR = join(PACKAGE_ROOT, "fragments");
+const STATE_DIR = join(homedir(), ".local", "share", "pi-prompts");
+const STATE_PATH = join(STATE_DIR, "state.json");
 
-function getStateDir(pi: ExtensionAPI): string {
-  // Global state: ~/.pi/agent/extensions/pi-prompts/
-  const globalDir = join(pi.paths.globalExtensionsDir, "pi-prompts");
-  return globalDir;
-}
-
-function getStatePath(pi: ExtensionAPI): string {
-  // Check project override first
-  const projectPath = join(pi.paths.cwd, ".pi", "extensions", "pi-prompts", "state.json");
-  if (existsSync(projectPath)) {
-    return projectPath;
-  }
-  return join(getStateDir(pi), "state.json");
-}
-
-function loadState(pi: ExtensionAPI): State {
-  const path = getStatePath(pi);
-  if (!existsSync(path)) {
+function loadState(): State {
+  if (!existsSync(STATE_PATH)) {
     return { ...DEFAULT_STATE };
   }
   try {
-    const raw = readFileSync(path, "utf-8");
+    const raw = readFileSync(STATE_PATH, "utf-8");
     const parsed = JSON.parse(raw);
     return {
       enabled: parsed.enabled ?? DEFAULT_STATE.enabled,
@@ -52,13 +39,11 @@ function loadState(pi: ExtensionAPI): State {
   }
 }
 
-function saveState(pi: ExtensionAPI, state: State): void {
-  const dir = getStateDir(pi);
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
+function saveState(state: State): void {
+  if (!existsSync(STATE_DIR)) {
+    mkdirSync(STATE_DIR, { recursive: true });
   }
-  const path = join(dir, "state.json");
-  writeFileSync(path, JSON.stringify(state, null, 2) + "\n");
+  writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + "\n");
 }
 
 function getAvailableGroups(): string[] {
@@ -110,7 +95,6 @@ export default function (pi: ExtensionAPI) {
   pi.registerCommand("pi-prompts", {
     description: "Toggle Claude Code prompts injection (on|off) or show status",
     getArgumentCompletions: (prefix: string) => {
-      const state = loadState(pi);
       const groups = getAvailableGroups();
       const options = ["on", "off", "status", ...groups];
       const filtered = options.filter((o) => o.startsWith(prefix));
@@ -120,7 +104,7 @@ export default function (pi: ExtensionAPI) {
     },
     handler: async (args, ctx) => {
       const parts = args.trim().split(/\s+/).filter(Boolean);
-      const state = loadState(pi);
+      const state = loadState();
       const groups = getAvailableGroups();
       const upstream = loadUpstreamVersion();
 
@@ -134,7 +118,7 @@ export default function (pi: ExtensionAPI) {
           : "not synced";
 
         ctx.ui.notify(
-          `pi-prompts: ${state.enabled ? "ON" : "OFF"}\n\nGroups:\n${groupStatus}\n\nUpstream: ${upstreamInfo}`,
+          `pi-prompts: ${state.enabled ? "ON" : "OFF"}\n\nGroups:\n${groupStatus}\n\nUpstream: ${upstreamInfo}\nState: ${STATE_PATH}`,
           "info"
         );
         return;
@@ -143,7 +127,7 @@ export default function (pi: ExtensionAPI) {
       // /pi-prompts on|off
       if (parts[0] === "on" || parts[0] === "off") {
         state.enabled = parts[0] === "on";
-        saveState(pi, state);
+        saveState(state);
         ctx.ui.notify(`pi-prompts: ${state.enabled ? "ON" : "OFF"}`, "info");
         return;
       }
@@ -153,12 +137,12 @@ export default function (pi: ExtensionAPI) {
         const group = parts[0];
         if (parts[1] === "on" || parts[1] === "off") {
           state.groups[group] = parts[1] === "on";
-          saveState(pi, state);
+          saveState(state);
           ctx.ui.notify(`pi-prompts: ${group} ${state.groups[group] ? "ON" : "OFF"}`, "info");
         } else {
           // Toggle
           state.groups[group] = !state.groups[group];
-          saveState(pi, state);
+          saveState(state);
           ctx.ui.notify(`pi-prompts: ${group} ${state.groups[group] ? "ON" : "OFF"}`, "info");
         }
         return;
@@ -170,7 +154,7 @@ export default function (pi: ExtensionAPI) {
 
   // Inject enabled fragments before agent starts
   pi.on("before_agent_start", async (event, _ctx) => {
-    const state = loadState(pi);
+    const state = loadState();
 
     if (!state.enabled) {
       return {}; // Short-circuit: no injection
